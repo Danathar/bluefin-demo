@@ -135,16 +135,19 @@ rechunk $target_image=image_name $tag=default_tag:
     # TODO: pin chunkah image to hash once mature enough
     # You may run into space issues on github runenrs as we are making a
     # complete copy of the image
-    export CHUNKAH_CONFIG_STR=$(podman inspect "${target_image}")
+    CHUNKAH_CONFIG_FILE=$(mktemp)
+    podman inspect "${target_image}" > "${CHUNKAH_CONFIG_FILE}"
     podman run --rm --mount=type=image,src="${target_image}",target=/chunkah \
-    -e CHUNKAH_CONFIG_STR quay.io/coreos/chunkah:latest \
+    -v "${CHUNKAH_CONFIG_FILE}:/chunkah-config.json:ro,Z" quay.io/coreos/chunkah:latest \
     build \
     --verbose \
     --compressed \
     --max-layers 128 \
     --prune /sysroot/ \
     --label ostree.commit- --label ostree.final-diffid- \
+    --config /chunkah-config.json \
     --tag "${target_image}:${tag}" | podman load
+    rm -f "${CHUNKAH_CONFIG_FILE}"
 
 # Split the image for smaller updates (Classical)!
 ostree-rechunk $target_image=image_name $tag=default_tag:
