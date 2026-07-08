@@ -1,0 +1,24 @@
+{
+  "method": "containerfile",
+  "base_image_uri": "ghcr.io/ublue-os/bluefin:stable",
+  "base_image_name": "Bluefin (GNOME)",
+  "repo_name": "bluefin-demo",
+  "image_desc": "Demo image created with Atomic Image Builder",
+  "packages": [
+    "tmux",
+    "htop",
+    "fastfetch"
+  ],
+  "copr_repos": [],
+  "services": [
+    "sshd.service"
+  ],
+  "removed_packages": [],
+  "brew_enabled": false,
+  "signing_enabled": true,
+  "github_user": "Danathar",
+  "scanned_packages": [],
+  "scanned_removed": [],
+  "tool_version": "0.9-beta",
+  "state_version": 1
+}
